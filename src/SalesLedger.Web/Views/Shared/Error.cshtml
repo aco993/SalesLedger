@@ -1,0 +1,16 @@
+@model SalesLedger.Web.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="surface-card info-card">
+    <h2 class="section-title text-danger mb-3">Something went wrong</h2>
+    <p class="text-muted">The application could not process the request. This project includes a dedicated error page so failures are handled more gracefully than a raw server exception.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+    }
+
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-primary">Back to Dashboard</a>
+</section>

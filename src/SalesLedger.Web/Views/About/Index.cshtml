@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "About Project";
+}
+
+<section class="surface-card info-card">
+    <h2 class="section-title mb-3">About SalesLedger</h2>
+    <p>SalesLedger is a portfolio-oriented ASP.NET Core MVC application for operational sales and transaction management. It was designed to look credible for employers while also serving as a realistic stepping stone toward a Data Warehouse or Business Intelligence thesis project.</p>
+
+    <div class="row g-4 mt-1">
+        <div class="col-md-6">
+            <h3 class="section-title">Architecture Focus</h3>
+            <ul>
+                <li>Domain entities are separated from infrastructure and UI concerns.</li>
+                <li>EF Core with SQL Server powers the operational data model and seed data.</li>
+                <li>Services handle business logic and keep controllers lightweight.</li>
+                <li>View models shape pages and forms without exposing persistence objects directly.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3 class="section-title">Data Warehouse Direction</h3>
+            <ul>
+                <li><strong>FactSales:</strong> transaction amount, quantity, payment, source and keys.</li>
+                <li><strong>DimSeller:</strong> seller name, company and contact attributes.</li>
+                <li><strong>DimProduct:</strong> reusable product master data and category classification.</li>
+                <li><strong>DimCustomer:</strong> lightweight buyer information when available.</li>
+                <li><strong>DimDate:</strong> transaction dates ready for monthly and yearly analysis.</li>
+            </ul>
+        </div>
+    </div>
+</section>

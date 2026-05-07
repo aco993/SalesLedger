@@ -1,0 +1,91 @@
+@model ReportsViewModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<section class="row g-4">
+    <div class="col-xl-6">
+        <div class="surface-card table-card chart-panel">
+            <h3 class="section-title mb-3">Monthly Sales Trend</h3>
+            <div class="chart-canvas-wrapper">
+                <canvas id="reportsMonthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="surface-card table-card">
+            <h3 class="section-title mb-3">Seller Performance</h3>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Seller</th>
+                            <th>Transactions</th>
+                            <th class="text-end">Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.SellerPerformance)
+                    {
+                        <tr>
+                            <td>@item.SellerName</td>
+                            <td>@item.TransactionsCount</td>
+                            <td class="text-end">@item.TotalAmount.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="surface-card table-card">
+            <h3 class="section-title mb-3">Top Product Revenue</h3>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th class="text-end">Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.ProductPerformance)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.QuantitySold</td>
+                            <td class="text-end">@item.TotalAmount.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlySales.Select(x => x.Label)));
+        const values = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlySales.Select(x => x.TotalAmount)));
+
+        new Chart(document.getElementById("reportsMonthlyChart"), {
+            type: "bar",
+            data: {
+                labels,
+                datasets: [{
+                    label: "Revenue",
+                    data: values,
+                    backgroundColor: "#2563eb",
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+}

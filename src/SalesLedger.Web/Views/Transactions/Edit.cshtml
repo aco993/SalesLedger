@@ -1,0 +1,20 @@
+@model TransactionFormViewModel
+@{
+    ViewData["Title"] = "Edit Transaction";
+}
+
+<section class="surface-card form-card">
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <input asp-for="Id" type="hidden" />
+        @await Html.PartialAsync("_Form", Model)
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Update Transaction</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

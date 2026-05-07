@@ -1,0 +1,40 @@
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS Code / Visual Studio
+.idea/
+.vs/
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Database and local storage
+*.mdf
+*.ldf
+*.db
+*.db-shm
+*.db-wal
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# npm
+node_modules/
+
+# Test results
+TestResults/
+coverage/
+
+# Secrets
+appsettings.Local.json
+secrets.json

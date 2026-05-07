@@ -1,0 +1,19 @@
+@model CustomerFormViewModel
+@{
+    ViewData["Title"] = "Create Customer";
+}
+
+<section class="surface-card form-card">
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <partial name="_FormFields" model="Model" />
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save Customer</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,22 @@
+@model TransactionListItemViewModel
+@{
+    ViewData["Title"] = "Transaction Details";
+}
+
+<section class="surface-card info-card">
+    <div class="row g-4">
+        <div class="col-md-6"><strong>Date:</strong> @Model.TransactionDate.ToString("dd.MM.yyyy")</div>
+        <div class="col-md-6"><strong>Seller:</strong> @Model.SellerName</div>
+        <div class="col-md-6"><strong>Product:</strong> @Model.ProductName</div>
+        <div class="col-md-6"><strong>Customer / Buyer:</strong> @Model.CustomerDisplayName</div>
+        <div class="col-md-6"><strong>Quantity:</strong> @Model.Quantity</div>
+        <div class="col-md-6"><strong>Unit Price:</strong> @Model.UnitPrice.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</div>
+        <div class="col-md-6"><strong>Payment Type:</strong> @Model.PaymentType</div>
+        <div class="col-md-6"><strong>Source Type:</strong> @Model.SourceType</div>
+        <div class="col-12"><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</section>

@@ -1,0 +1,170 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="hero-banner">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <span class="chip"><i class="bi bi-stars"></i> Portfolio-grade operations dashboard</span>
+            <h2 class="mt-3 mb-2">Track sellers, products, imports and transaction performance in one place.</h2>
+            <p class="mb-0">This operational system is structured to be useful today and still clean enough to evolve into a BI or Data Warehouse thesis foundation later.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-start">
+            <a class="btn btn-light btn-lg" asp-controller="Transactions" asp-action="Create">Add Transaction</a>
+            <a class="btn btn-outline-light btn-lg" asp-controller="Reports" asp-action="Index">Open Reports</a>
+        </div>
+    </div>
+</section>
+
+<section class="metric-grid">
+    <div class="surface-card stat-card">
+        <div class="stat-label">Total sales amount</div>
+        <div class="stat-value">@Model.TotalSalesAmount.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</div>
+    </div>
+    <div class="surface-card stat-card">
+        <div class="stat-label">Transactions</div>
+        <div class="stat-value">@Model.TotalTransactions</div>
+    </div>
+    <div class="surface-card stat-card">
+        <div class="stat-label">Sellers</div>
+        <div class="stat-value">@Model.TotalSellers</div>
+    </div>
+    <div class="surface-card stat-card">
+        <div class="stat-label">Products</div>
+        <div class="stat-value">@Model.TotalProducts</div>
+    </div>
+</section>
+
+<section class="row g-4">
+    <div class="col-xl-8">
+        <div class="surface-card chart-panel table-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title mb-0">Sales by Month</h3>
+                <span class="badge badge-soft">Revenue trend</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <canvas id="salesByMonthChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="surface-card chart-panel table-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title mb-0">Sales by Seller</h3>
+                <span class="badge badge-soft">Contribution mix</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <canvas id="salesBySellerChart"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mt-1">
+    <div class="col-xl-5">
+        <div class="surface-card table-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title mb-0">Top Products</h3>
+                <a asp-controller="Products" asp-action="Index" class="btn btn-sm btn-outline-secondary">Manage Products</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th class="text-end">Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var product in Model.TopProducts)
+                    {
+                        <tr>
+                            <td>@product.ProductName</td>
+                            <td>@product.QuantitySold</td>
+                            <td class="text-end fw-semibold">@product.TotalAmount.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-7">
+        <div class="surface-card table-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title mb-0">Recent Transactions</h3>
+                <a asp-controller="Transactions" asp-action="Index" class="btn btn-sm btn-outline-secondary">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Seller</th>
+                            <th>Product</th>
+                            <th>Buyer</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var transaction in Model.RecentTransactions)
+                    {
+                        <tr>
+                            <td>@transaction.TransactionDate.ToString("dd.MM.yyyy")</td>
+                            <td>@transaction.SellerName</td>
+                            <td>@transaction.ProductName</td>
+                            <td>@transaction.BuyerName</td>
+                            <td class="text-end fw-semibold">@transaction.TotalAmount.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const monthLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SalesByMonth.Select(x => x.Label)));
+        const monthValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SalesByMonth.Select(x => x.TotalAmount)));
+        const sellerLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SalesBySeller.Select(x => x.SellerName)));
+        const sellerValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SalesBySeller.Select(x => x.TotalAmount)));
+
+        new Chart(document.getElementById("salesByMonthChart"), {
+            type: "line",
+            data: {
+                labels: monthLabels,
+                datasets: [{
+                    label: "Sales",
+                    data: monthValues,
+                    borderColor: "#0f766e",
+                    backgroundColor: "rgba(15, 118, 110, 0.15)",
+                    tension: 0.35,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        new Chart(document.getElementById("salesBySellerChart"), {
+            type: "doughnut",
+            data: {
+                labels: sellerLabels,
+                datasets: [{
+                    data: sellerValues,
+                    backgroundColor: ["#0f766e", "#14b8a6", "#2563eb", "#f59e0b", "#7c3aed"]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+}
