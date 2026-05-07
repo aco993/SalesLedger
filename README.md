@@ -1,5 +1,3 @@
-# SalesLedger
-
 SalesLedger is a professional portfolio-grade ASP.NET Core MVC application for sales and transaction management.  
 It is designed as both:
 
@@ -157,3 +155,6 @@ The goal is to demonstrate:
 - clean separation of concerns
 - business-oriented UX instead of a classroom demo
 - awareness of how operational systems evolve into BI-ready architectures
+=======
+SalesLedger is a professional portfolio-grade ASP.NET Core MVC application for sales and transaction management.  
+>>>>>>> 46a65ed54fed8b662d9585fd8c591c829656ae90
